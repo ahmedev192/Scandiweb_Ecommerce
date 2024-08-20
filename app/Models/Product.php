@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Config\database;
+use App\Config\Database;
 
 
 
@@ -19,7 +19,7 @@ abstract class Product
         $this->setSku($sku);
         $this->setName($name);
         $this->setPrice($price);
-        $this->db = database::getConnection();
+        $this->db = Database::getConnection();
     }
 
     public function setId($id): void

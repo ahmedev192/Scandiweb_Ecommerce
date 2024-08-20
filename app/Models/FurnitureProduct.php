@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Config\database;
+use App\Config\Database;
 use mysqli;
 
 
