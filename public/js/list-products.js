@@ -6,7 +6,7 @@ document.getElementById('delete-product-btn').addEventListener('click', function
     const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
 
     if (idsToDelete.length > 0) {
-        fetch('/public/deleteproducts', {
+        fetch('/deleteproducts', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

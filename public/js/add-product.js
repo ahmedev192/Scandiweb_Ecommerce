@@ -57,14 +57,14 @@ $(document).ready(function() {
 
         // AJAX request
         $.ajax({
-            url: '/public/saveproduct', // Correct route to handle saving
+            url: '/saveproduct', // Correct route to handle saving
             type: 'POST',
             data: formData,
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
                     alert(response.message);
-                    window.location.href = '/public/'; // Redirect to the product list page
+                    window.location.href = '/'; // Redirect to the product list page
                 } else {
                     alert(response.message);
                 }
@@ -78,6 +78,6 @@ $(document).ready(function() {
 
     $('#cancelButton').click(function() {
         // Redirect to the product list page
-        window.location.href = '/public/';
+        window.location.href = '/';
     });
 });

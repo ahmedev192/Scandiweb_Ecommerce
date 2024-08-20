@@ -11,8 +11,9 @@ class Database
 
     private function __construct()
     {
+
         // Load the .env file
-        require_once __DIR__ . '/../../env_loader.php';
+        include __DIR__ . '/../../env_loader.php';
         loadEnv(__DIR__ . '/../../.env');
 
         $host = $_ENV['DB_HOST'];

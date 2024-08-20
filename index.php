@@ -1,7 +1,7 @@
 <?php
-require_once '../app/Config/database.php';
-require_once '../app/Controllers/ProductController.php';
-require_once __DIR__ . '/../autoload.php';
+include __DIR__ .'/app/Config/database.php';
+include __DIR__ .'/app/Controllers/ProductController.php';
+include __DIR__ . '/autoload.php';
 
 use App\Controllers\ProductController;
 
@@ -12,13 +12,13 @@ error_log("Requested URI: " . $uri);
 
 $controller = new ProductController();
 
-if ($uri === '/public/') {
+if ($uri === '/') {
     $controller->listProducts();
-} elseif ($uri === '/public/addproduct') {
+} elseif ($uri === '/addproduct') {
     $controller->AddProductGet();
-} elseif ($uri === '/public/saveproduct') {
+} elseif ($uri === '/saveproduct') {
     $controller->AddProductPost();
-} elseif ($uri === '/public/deleteproducts') {
+} elseif ($uri === '/deleteproducts') {
     $controller->deleteProducts();
 } else {
     http_response_code(404);

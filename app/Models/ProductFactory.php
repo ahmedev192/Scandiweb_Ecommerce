@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+include $_SERVER['DOCUMENT_ROOT'] . '/app/config/database.php'; 
 
 use App\Config\database;
 

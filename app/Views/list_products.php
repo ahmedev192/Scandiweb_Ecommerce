@@ -18,7 +18,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1>Product List</h1>
                 <div>
-                    <a href="../public/addproduct" class="btn btn-primary">ADD</a>
+                    <a href="../addproduct" class="btn btn-primary">ADD</a>
                     <button id="delete-product-btn" class="btn btn-danger">MASS DELETE</button>
                 </div>
             </div>

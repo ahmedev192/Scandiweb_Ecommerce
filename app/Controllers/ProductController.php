@@ -11,36 +11,16 @@ class ProductController
     public function listProducts()
     {
         $products = ProductFactory::getAllProducts();
+        $displayProducts = []; // Declare the array before using it
 
         foreach ($products as $product) {
             $displayProducts[] = $product->display();
         }
 
-        include '../app/Views/list_products.php';
+        include './app/Views/list_products.php';
     }
 
 
-    // public function saveProduct()
-    // {
-    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //         $type = $_POST['type'];
-    //         $sku = $_POST['sku'];
-    //         $name = $_POST['name'];
-    //         $price = $_POST['price'];
-    //         $attributes = $_POST['attributes'];
-
-    //         try {
-    //             ProductFactory::createAndSave($type, $sku, $name, $price, $attributes);
-    //             $message = "Product saved successfully!";
-    //         } catch (\Exception $e) {
-    //             $message = "Error: " . $e->getMessage();
-    //             echo $message;
-    //         }
-
-    //         include '../app/Views/addproduct.php';
-    //     }
-    //     include '../app/Views/addproduct.php';
-    // }
 
     public function AddProductPost()
     {
@@ -74,7 +54,7 @@ class ProductController
     public function AddProductGet()
     {
         // This will load the form view
-        include '../app/Views/add_product.php';
+        include './app/Views/add_product.php';
     }
 
 
