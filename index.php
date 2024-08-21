@@ -1,4 +1,6 @@
 <?php
+
+
 include __DIR__ . '/app/Config/Database.php';
 include __DIR__ . '/app/Controllers/ProductController.php';
 include __DIR__ . '/autoload.php';

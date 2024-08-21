@@ -22,17 +22,21 @@ class ProductController
 
 
 
-    public function AddProductPost()
-    {
-        header('Content-Type: application/json');
+  public function AddProductPost()
+{
+    header('Content-Type: application/json');
 
-        $response = ['success' => false];
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $type = $_POST['type'];
-            $sku = $_POST['sku'];
-            $name = $_POST['name'];
-            $price = $_POST['price'];
-            $attributes = $_POST['attributes'];
+    $response = ['success' => false];
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Decode JSON data from the request body
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        if (json_last_error() === JSON_ERROR_NONE) {
+            $type = $input['type'];
+            $sku = $input['sku'];
+            $name = $input['name'];
+            $price = $input['price'];
+            $attributes = $input['attributes'];
 
             try {
                 // Create and save the product
@@ -43,11 +47,14 @@ class ProductController
                 $response['message'] = 'Error: ' . $e->getMessage();
             }
         } else {
-            $response['message'] = 'Invalid request method.';
+            $response['message'] = 'Invalid JSON data.';
         }
-
-        echo json_encode($response);
+    } else {
+        $response['message'] = 'Invalid request method.';
     }
+
+    echo json_encode($response);
+}
 
 
 
@@ -58,9 +65,13 @@ class ProductController
     }
 
 
-    public function deleteProducts()
-    {
-        $input = json_decode(file_get_contents('php://input'), true);
+  public function deleteProducts()
+{
+    header('Content-Type: application/json');
+
+    $input = json_decode(file_get_contents('php://input'), true);
+
+    if (json_last_error() === JSON_ERROR_NONE && isset($input['ids'])) {
         $idsToDelete = $input['ids'];
 
         try {
@@ -71,10 +82,13 @@ class ProductController
                 }
             }
 
-
             echo json_encode(['success' => true]);
         } catch (\Exception $e) {
             echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Invalid JSON data or missing ids']);
     }
+}
+
 }

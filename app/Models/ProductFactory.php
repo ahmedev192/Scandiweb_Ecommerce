@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-include $_SERVER['DOCUMENT_ROOT'] . '/app/Config/Database.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/app/config/database.php';
 
 use App\Config\Database;
 
@@ -28,10 +28,13 @@ class ProductFactory
 
         $productClass = self::$productMap[$type];
 
-        return new $productClass($sku, $name, $price, ...array_values($attributesArray));
+        return new $productClass(
+            self::escape($sku),
+            self::escape($name),
+            self::escape($price),
+            ...array_map([self::class, 'escape'], array_values($attributesArray))
+        );
     }
-
-
 
     private static function isValidType($type)
     {
@@ -54,8 +57,6 @@ class ProductFactory
         return $attributes;
     }
 
-
-
     private static function skuExists($sku)
     {
         $db = Database::getConnection();
@@ -72,7 +73,6 @@ class ProductFactory
 
     public static function load($id)
     {
-        // Fetch the product type based on the product ID
         $db = Database::getConnection();
         $stmt = $db->prepare("SELECT type FROM products WHERE id = ?");
         $stmt->bind_param("i", $id);
@@ -97,18 +97,13 @@ class ProductFactory
         return $product;
     }
 
-
     public static function createAndSave($type, $sku, $name, $price, $attributes = [], $checkSku = true)
     {
-        // Use the factory to create the product
         $product = self::create($type, $sku, $name, $price, $attributes, $checkSku);
-
-        // Save the product using the model's save method
         $product->save();
 
         return $product;
     }
-
 
     public static function getAllProducts()
     {
@@ -118,11 +113,20 @@ class ProductFactory
         $products = [];
         while ($row = $result->fetch_assoc()) {
             $productClass = self::$productMap[$row['type']];
-            $product = new $productClass($row['sku'], $row['name'], $row['price']);
+            $product = new $productClass(
+                self::escape($row['sku']),
+                self::escape($row['name']),
+                self::escape($row['price'])
+            );
             $product->load($row['id']);
             $products[] = $product;
         }
 
         return $products;
+    }
+
+    public static function escape($value)
+    {
+        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
     }
 }

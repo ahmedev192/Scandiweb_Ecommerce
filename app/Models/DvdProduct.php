@@ -1,8 +1,5 @@
 <?php
-
 namespace App\Models;
-
-
 
 class DvdProduct extends Product
 {
@@ -39,10 +36,9 @@ class DvdProduct extends Product
         $stmt->close();
     }
 
-
     public function getAttribute(): string
     {
-        return "Size: {$this->sizeMb} MB";
+        return "Size: " . ProductFactory::escape($this->sizeMb) . " MB";
     }
 
     protected function loadSpecific($id): void
@@ -61,14 +57,13 @@ class DvdProduct extends Product
     public function display()
     {
         return [
-            'id' => $this->id,
-            'sku' => $this->sku,
-            'name' => $this->name,
-            'price' => $this->price,
-            'additional_attributes' => "Size: {$this->sizeMb} MB",
+            'id' => ProductFactory::escape($this->id),
+            'sku' => ProductFactory::escape($this->sku),
+            'name' => ProductFactory::escape($this->name),
+            'price' => ProductFactory::escape($this->price),
+            'additional_attributes' => "Size: " . ProductFactory::escape($this->sizeMb) . " MB",
         ];
     }
-
 
     protected function deleteSpecific(): void
     {

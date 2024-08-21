@@ -5,12 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../public/css/styles.css">
+
+        <link href="../public/css/bootstrap.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="../public/css/styles.css">
 </head>
 
 <body>
-    <div class="container mt-5 content">
+       <div class="container mt-5 content">
         <form id="product_form">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>Product Add</h2>
@@ -45,25 +48,25 @@
             <!-- DVD Specific Field -->
             <div id="dvdFields" class="hidden mb-3">
                 <label for="size" class="form-label">Size (MB)</label>
-                <input type="number" class="form-control" id="size">
+                <input type="number" class="form-control" id="size" step="0.01" min="0">
                 <small class="form-text text-muted">Please, provide size in MB</small>
             </div>
 
             <!-- Book Specific Field -->
             <div id="bookFields" class="hidden mb-3">
                 <label for="weight" class="form-label">Weight (KG)</label>
-                <input type="number" class="form-control" id="weight">
+                <input type="number" class="form-control" id="weight" step="0.01" min="0">
                 <small class="form-text text-muted">Please, provide weight in KG</small>
             </div>
 
             <!-- Furniture Specific Fields -->
             <div id="furnitureFields" class="hidden mb-3">
                 <label for="height" class="form-label">Height (CM)</label>
-                <input type="number" class="form-control" id="height">
+                <input type="number" class="form-control" id="height" step="0.01" min="0">
                 <label for="width" class="form-label">Width (CM)</label>
-                <input type="number" class="form-control" id="width">
+                <input type="number" class="form-control" id="width" step="0.01" min="0">
                 <label for="length" class="form-label">Length (CM)</label>
-                <input type="number" class="form-control" id="length">
+                <input type="number" class="form-control" id="length" step="0.01" min="0">
                 <small class="form-text text-muted">Please, provide dimensions in HxWxL format</small>
             </div>
 
@@ -72,8 +75,17 @@
     </div>
     <?php include __DIR__ . '/Partials/footer.php'; ?>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+        <script src="../public/js//bootstrap.bundle.min.js"></script>
+
+    <script src="../public/js/jquery.min.js"></script>
+
+
+  
+  
+  
+  
+  
     <script src="../public/js/add-product.js"></script>
 </body>
 

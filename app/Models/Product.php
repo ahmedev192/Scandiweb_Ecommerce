@@ -32,26 +32,33 @@ abstract class Product
         return $this->id;
     }
 
+   
+  
+  
+  
     public function setSku($sku): void
     {
-        $this->sku = $sku;
+        $this->sku = ProductFactory::escape($sku);
     }
 
     public function getSku(): string
     {
-        return $this->sku;
+        return ProductFactory::escape($this->sku);
     }
 
     public function setName($name): void
     {
-        $this->name = $name;
+        $this->name = ProductFactory::escape($name);
     }
 
     public function getName(): string
     {
-        return $this->name;
+        return ProductFactory::escape($this->name);
     }
 
+  
+  
+  
     public function setPrice($price): void
     {
         $this->price = $price;
@@ -81,7 +88,8 @@ abstract class Product
 
     abstract public function getAttribute();
     // Add the load method
-    public function load($id): void
+
+      public function load($id): void
     {
         $stmt = $this->db->prepare("SELECT sku, name, price FROM products WHERE id = ?");
         $stmt->bind_param("i", $id);
@@ -90,9 +98,9 @@ abstract class Product
 
         if ($row = $result->fetch_assoc()) {
             $this->id = $id;
-            $this->sku = $row['sku'];
-            $this->name = $row['name'];
-            $this->price = $row['price'];
+            $this->sku = ProductFactory::escape($row['sku']);
+            $this->name = ProductFactory::escape($row['name']);
+            $this->price = ProductFactory::escape($row['price']);
         } else {
             throw new \Exception("Product not found");
         }
@@ -100,6 +108,15 @@ abstract class Product
         $stmt->close();
         $this->loadSpecific($id);
     }
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
     protected abstract function loadSpecific($id);
 

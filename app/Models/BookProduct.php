@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-
-
-
 class BookProduct extends Product
 {
     private $weightKg;
@@ -40,13 +37,10 @@ class BookProduct extends Product
         $stmt->close();
     }
 
-
     public function getAttribute(): string
     {
-        return "Weight: {$this->weightKg} Kg";
+        return "Weight: " . ProductFactory::escape($this->weightKg) . " Kg";
     }
-
-
 
     protected function loadSpecific($id): void
     {
@@ -61,15 +55,14 @@ class BookProduct extends Product
         $stmt->close();
     }
 
-
     public function display()
     {
         return [
-            'id' => $this->id,
-            'sku' => $this->sku,
-            'name' => $this->name,
-            'price' => $this->price,
-            'additional_attributes' => "Weight: {$this->weightKg} KG",
+            'id' => ProductFactory::escape($this->id),
+            'sku' => ProductFactory::escape($this->sku),
+            'name' => ProductFactory::escape($this->name),
+            'price' => ProductFactory::escape($this->price),
+            'additional_attributes' => "Weight: " . ProductFactory::escape($this->weightKg) . " KG",
         ];
     }
 

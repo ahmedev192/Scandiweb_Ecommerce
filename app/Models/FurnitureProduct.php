@@ -1,10 +1,5 @@
 <?php
-
 namespace App\Models;
-
-use App\Config\Database;
-use mysqli;
-
 
 class FurnitureProduct extends Product
 {
@@ -67,10 +62,8 @@ class FurnitureProduct extends Product
 
     public function getAttribute(): string
     {
-        return "Dimensions: {$this->heightCm}x{$this->widthCm}x{$this->lengthCm} CM";
+        return "Dimensions: " . ProductFactory::escape($this->heightCm) . "x" . ProductFactory::escape($this->widthCm) . "x" . ProductFactory::escape($this->lengthCm) . " CM";
     }
-
-
 
     protected function loadSpecific($id): void
     {
@@ -87,21 +80,16 @@ class FurnitureProduct extends Product
         $stmt->close();
     }
 
-
-
-
-
     public function display()
     {
         return [
-            'id' => $this->id,
-            'sku' => $this->sku,
-            'name' => $this->name,
-            'price' => $this->price,
-            'additional_attributes' => "Dimensions: {$this->widthCm}x{$this->heightCm}x{$this->lengthCm}",
+            'id' => ProductFactory::escape($this->id),
+            'sku' => ProductFactory::escape($this->sku),
+            'name' => ProductFactory::escape($this->name),
+            'price' => ProductFactory::escape($this->price),
+            'additional_attributes' => "Dimensions: " . ProductFactory::escape($this->heightCm) . "x" . ProductFactory::escape($this->widthCm) . "x" . ProductFactory::escape($this->lengthCm) . " CM",
         ];
     }
-
 
     protected function deleteSpecific(): void
     {
