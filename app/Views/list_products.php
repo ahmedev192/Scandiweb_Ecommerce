@@ -26,19 +26,24 @@
             <div id="html_injection" class="top-line">
             </div>
             <div class="row">
-                               <?php foreach ($displayProducts as $product): ?>
-                    <div  class="col-md-3 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <input type="checkbox" class="delete-checkbox form-check-input" value="<?= htmlspecialchars($product['id']) ?>">
-                                <h5 class="card-title"><?= htmlspecialchars($product['sku']) ?></h5>
-                                <p class="card-text"><?= htmlspecialchars($product['name']) ?></p>
-                                <p class="card-text"><?= htmlspecialchars($product['price']) ?> $</p>
-                                <p class="card-text"><?= htmlspecialchars($product['additional_attributes']) ?></p>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+                       <?php if (!empty($displayProducts)): ?>
+    <?php foreach ($displayProducts as $product): ?>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <input type="checkbox" class="delete-checkbox form-check-input" value="<?= htmlspecialchars($product['id']) ?>">
+                    <h5 class="card-title"><?= htmlspecialchars($product['sku']) ?></h5>
+                    <p class="card-text"><?= htmlspecialchars($product['name']) ?></p>
+                    <p class="card-text"><?= htmlspecialchars($product['price']) ?> $</p>
+                    <p class="card-text"><?= htmlspecialchars($product['additional_attributes']) ?></p>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+<?php else: ?>
+    <p>No products available.</p>
+<?php endif; ?>
+       
             </div>
         </form>
     </div>
