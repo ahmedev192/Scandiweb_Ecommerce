@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 class DvdProduct extends Product
@@ -36,10 +37,6 @@ class DvdProduct extends Product
         $stmt->close();
     }
 
-    public function getAttribute(): string
-    {
-        return "Size: " . ProductFactory::escape($this->sizeMb) . " MB";
-    }
 
     protected function loadSpecific($id): void
     {

@@ -4,8 +4,6 @@ namespace App\Models;
 
 use App\Config\Database;
 
-
-
 abstract class Product
 {
     protected $id;
@@ -14,6 +12,7 @@ abstract class Product
     protected $price;
     protected $db;
 
+    // Initialize product with SKU, name, and price
     public function __construct($sku, $name, $price)
     {
         $this->setSku($sku);
@@ -22,6 +21,7 @@ abstract class Product
         $this->db = Database::getConnection();
     }
 
+    // Setters and getters for product properties
     public function setId($id): void
     {
         $this->id = $id;
@@ -32,10 +32,6 @@ abstract class Product
         return $this->id;
     }
 
-   
-  
-  
-  
     public function setSku($sku): void
     {
         $this->sku = ProductFactory::escape($sku);
@@ -56,9 +52,6 @@ abstract class Product
         return ProductFactory::escape($this->name);
     }
 
-  
-  
-  
     public function setPrice($price): void
     {
         $this->price = $price;
@@ -69,6 +62,7 @@ abstract class Product
         return $this->price;
     }
 
+    // Save product to the database
     public function save(): void
     {
         $stmt = $this->db->prepare("INSERT INTO products (sku, name, price, type) VALUES (?, ?, ?, ?)");
@@ -77,19 +71,11 @@ abstract class Product
         $stmt->execute();
         $this->id = $stmt->insert_id;
         $stmt->close();
-        $this->saveSpecific();
+        $this->saveSpecific(); // Save product-specific details
     }
 
-
-    abstract public function getType(): string;
-    abstract protected function saveSpecific(): void;
-    public abstract function display();
-
-
-    abstract public function getAttribute();
-    // Add the load method
-
-      public function load($id): void
+    // Load product from the database by ID
+    public function load($id): void
     {
         $stmt = $this->db->prepare("SELECT sku, name, price FROM products WHERE id = ?");
         $stmt->bind_param("i", $id);
@@ -106,33 +92,24 @@ abstract class Product
         }
 
         $stmt->close();
-        $this->loadSpecific($id);
+        $this->loadSpecific($id); // Load product-specific details
     }
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
-    protected abstract function loadSpecific($id);
-
-
-
+    // Delete product from the database
     public function delete(): void
     {
-        // Delete the product from the base products table
         $stmt = $this->db->prepare("DELETE FROM products WHERE id = ?");
         $stmt->bind_param("i", $this->id);
         $stmt->execute();
         $stmt->close();
 
-        // Delete specific product details
-        $this->deleteSpecific();
+        $this->deleteSpecific(); // Delete product-specific details
     }
 
-    protected abstract function deleteSpecific(): void;
+    // Abstract methods to be implemented by subclasses
+    abstract public function getType(): string;
+    abstract protected function saveSpecific(): void;
+    abstract protected function loadSpecific($id): void;
+    abstract protected function deleteSpecific(): void;
+    public abstract function display();
 }

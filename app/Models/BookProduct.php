@@ -37,11 +37,6 @@ class BookProduct extends Product
         $stmt->close();
     }
 
-    public function getAttribute(): string
-    {
-        return "Weight: " . ProductFactory::escape($this->weightKg) . " Kg";
-    }
-
     protected function loadSpecific($id): void
     {
         $stmt = $this->db->prepare("SELECT weight_kg FROM product_book WHERE id = ?");

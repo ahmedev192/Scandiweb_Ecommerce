@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 class FurnitureProduct extends Product
@@ -60,10 +61,7 @@ class FurnitureProduct extends Product
         $stmt->close();
     }
 
-    public function getAttribute(): string
-    {
-        return "Dimensions: " . ProductFactory::escape($this->heightCm) . "x" . ProductFactory::escape($this->widthCm) . "x" . ProductFactory::escape($this->lengthCm) . " CM";
-    }
+
 
     protected function loadSpecific($id): void
     {

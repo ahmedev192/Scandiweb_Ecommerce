@@ -8,12 +8,14 @@ use App\Config\Database;
 
 class ProductFactory
 {
+    // Map of product types to their respective classes
     private static $productMap = [
         'DVD' => DvdProduct::class,
         'Book' => BookProduct::class,
         'Furniture' => FurnitureProduct::class
     ];
 
+    // Create a product instance based on type and attributes
     public static function create($type, $sku, $name, $price, $attributes = [], $checkSku = false)
     {
         if (!self::isValidType($type)) {
@@ -36,41 +38,16 @@ class ProductFactory
         );
     }
 
-    private static function isValidType($type)
+    // Create, save, and return a product instance
+    public static function createAndSave($type, $sku, $name, $price, $attributes = [], $checkSku = true)
     {
-        return array_key_exists($type, self::$productMap);
+        $product = self::create($type, $sku, $name, $price, $attributes, $checkSku);
+        $product->save();
+
+        return $product;
     }
 
-    private static function parseAttributes($attributes)
-    {
-        if (is_string($attributes)) {
-            $attributes = json_decode($attributes, true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception("Invalid attributes format");
-            }
-        }
-
-        if (!is_array($attributes)) {
-            throw new \Exception("Attributes should be an array or a JSON string");
-        }
-
-        return $attributes;
-    }
-
-    private static function skuExists($sku)
-    {
-        $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT COUNT(*) FROM products WHERE sku = ?");
-        $stmt->bind_param('s', $sku);
-        $stmt->execute();
-        $count = 0;
-        $stmt->bind_result($count);
-        $stmt->fetch();
-        $stmt->close();
-
-        return $count > 0;
-    }
-
+    // Load a product by its ID
     public static function load($id)
     {
         $db = Database::getConnection();
@@ -97,14 +74,7 @@ class ProductFactory
         return $product;
     }
 
-    public static function createAndSave($type, $sku, $name, $price, $attributes = [], $checkSku = true)
-    {
-        $product = self::create($type, $sku, $name, $price, $attributes, $checkSku);
-        $product->save();
-
-        return $product;
-    }
-
+    // Get all products from the database
     public static function getAllProducts()
     {
         $db = Database::getConnection();
@@ -125,6 +95,45 @@ class ProductFactory
         return $products;
     }
 
+    // Check if the product type is valid
+    private static function isValidType($type)
+    {
+        return array_key_exists($type, self::$productMap);
+    }
+
+    // Parse and validate attributes, handling both JSON and array formats
+    private static function parseAttributes($attributes)
+    {
+        if (is_string($attributes)) {
+            $attributes = json_decode($attributes, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new \Exception("Invalid attributes format");
+            }
+        }
+
+        if (!is_array($attributes)) {
+            throw new \Exception("Attributes should be an array or a JSON string");
+        }
+
+        return $attributes;
+    }
+
+    // Check if a SKU already exists in the database
+    private static function skuExists($sku)
+    {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("SELECT COUNT(*) FROM products WHERE sku = ?");
+        $stmt->bind_param('s', $sku);
+        $stmt->execute();
+        $count = 0;
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        $stmt->close();
+
+        return $count > 0;
+    }
+
+    // Escape values to prevent XSS attacks
     public static function escape($value)
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
